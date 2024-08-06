@@ -1,0 +1,185 @@
+<!-- view_data.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Data</title>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background: rgb(238,174,202);
+            background: linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(239,239,239,1) 0%, rgba(190,201,215,1) 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 30vh; /* Ensure full height even with little content */
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        h1 {
+            font-size: 60px;
+            cursor: pointer;
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .bck {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .bck button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .bck button:hover {
+            background-color: #555;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 10px;
+            }
+
+            th, td {
+                font-size: 14px;
+            }
+
+            .bck {
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .bck button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        }
+        .search-bar {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        #searchInput {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            flex-grow: 1;
+            margin-right: 0.5rem;
+        }
+
+        #searchButton {
+            padding: 0.5rem 1rem;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- {% include 'header.html' %} -->
+    <h1>Added Data</h1>
+    <div class="container">
+        <div class="search-bar">
+            <form method="GET" action="{% url 'view_data' %}">
+                <input type="text" id="searchInput" name="search" placeholder="Search by Name, Email, etc." value="{{ query }}">
+                <button type="submit" id="searchButton">Search</button>
+            </form>
+        </div>
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>Serial No.</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Aadhaar No.</th>
+                    <th>Mobile Number</th>
+                    <th>Address</th>
+                    <th>Photo</th>
+                    {% if user.is_staff %}
+                    <th>Edit</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in data %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.aadhaar }}</td>
+                    <td>{{ user.mobile }}</td>
+                    <td>{{user.address}}</td>
+                    <td>
+                        {% if user.document_path %}
+                            <a href="{{ user.document_path }}" target="_blank">{{ user.doct_file_name }}</a>
+                        {% else %}
+                            No document uploaded
+                        {% endif %}
+                    </td>
+                    {% if user.is_staff %}
+                    <td>
+                        <a href="{% url 'edit_data' user.id %}">Edit</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="bck">
+            {% url 'home_page_acesss' as home_url %}
+            <button id="bckbtn">
+                <a href="./" style="text-decoration: none; color: white;">Back</a>
+            </button>
+        </div>
+    </div>
+    
+</body>
+</html>

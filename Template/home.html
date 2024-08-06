@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-I</title>
+    <link rel="stylesheet" href="../static/css/home.css">
+</head>
+
+<body>
+    {% include 'header.html' %}
+    
+    <div class="wrapper">
+        <div class="logo-icon">
+            <img src="../static/images/Logo.svg" alt="logo_image">
+        </div>
+        <div class="containerr">
+            <h1 id="text">Trusted data security and efficient management.</h1>
+        </div>
+    </div>
+   
+    <div class="container">
+        <div class="card">
+            <h1 style="font-family: 'Poppins', sans-serif;">Please Visit Here</h1>
+            <button>
+                <a href="Create_Acc" style="text-decoration: none; ">Create an Account For Admin</a>
+            </button>
+            <button>
+                <a href="view_data" style="text-decoration: none;">Details</a>
+            </button>
+            
+            <button id="add_data">Add Data</button>
+            <div id="myPopup" class="popup">
+                <span class="close-btn" id="closePopup">&times;</span>
+                <h2>Enter Details</h2>
+                <form id="dataForm" method="post" action="{% url 'add_data' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required><br>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required><br>
+                    <label for="aadhaar">Aadhaar No:</label>
+                    <input type="number" id="aadhaar" name="aadhaar" placeholder="Enter your Aadhaar Number" required><br>
+                    <label for="mobile">Mobile Number:</label>
+                    <input type="number" id="mobile" name="mobile" placeholder="Enter your mobile number" required><br>
+
+                    <label for="address">Address:</label>
+                    <input type="text" id="adrs" name="address" placeholder="Enter your address " required><br>
+
+                    <label for="user_photo">Upload Your Photo</label>
+                    <input type="file" id="doct" name="photo" required><br>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <!-- For Login Popup -->
+            <button>Login</button>
+
+           
+    </div>
+    <h1>{{Result}}</h1>
+
+    <script src="../static/js/home.js">
+        // Get references to the elements
+const addButton = document.getElementById('add_data');
+const popup = document.getElementById('myPopup');
+const closeButton = document.getElementById('closePopup');
+
+// Function to open the popup
+function openPopup() {
+    popup.style.display = 'block';
+}
+
+// Function to close the popup
+function closePopup() {
+    popup.style.display = 'none';
+}
+
+// Event listeners for opening and closing the popup
+addButton.addEventListener('click', openPopup);
+closeButton.addEventListener('click', closePopup);
+
+// Optional: Close the popup if clicking outside of it
+window.addEventListener('click', function(event) {
+    if (event.target === popup) {
+        closePopup();
+    }
+});
+
+    </script>
+</body>
+</html>
